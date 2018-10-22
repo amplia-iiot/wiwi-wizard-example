@@ -62,7 +62,7 @@ They will ask for the following information:
 
 **0.1.0**
 
-This version is compatible with opengate-web version >= 8.12.x
+This version is compatible with opengate-web version >= 8.13.x
 
 ## Ohters
 
