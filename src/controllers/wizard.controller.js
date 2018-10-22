@@ -3,7 +3,7 @@
 
     var _wizard = angular.module('wiwi.wizard');
 
-    _wizard.controller('wizardExampleController', ['$scope', '$uibModalInstance', '$controller', 'toastr', 'stepsWizardService', 'datastreamServiceProvider', '$window',
+    _wizard.controller('exampleWizardController', ['$scope', '$uibModalInstance', '$controller', 'toastr', 'stepsWizardService', 'datastreamServiceProvider', '$window',
         function ($scope, $uibModalInstance, $controller, toastr, stepsWizardService, datastreamServiceProvider, $window) {
 
             //***Configuration of wizard***
@@ -30,18 +30,12 @@
             };
             $scope.show_reset = false;
 
-            //src/config/wizard.config.js
-            var isEdit = $scope.config._event === 'edit';
-            var isCreate = $scope.config._event === 'create';
-
             $scope.isEditMode = function () {
-                //original: return Object.keys($scope.$resolve.updateData).length > 1;
-                return isEdit;
+                return Object.keys($scope.$resolve.updateData).length > 1;
             };
 
             if ($scope.isEditMode()) {
-                //src/config/wizard.config.js
-                var updateData = $scope.config.updateData;
+                var updateData = $scope.$resolve.updateData;
                 console.log('UPDATE_DATA: ' + JSON.stringify(updateData));
                 configWizard.disable = false;
                 configWizard.editMode = true;
@@ -77,6 +71,14 @@
                 $scope.progressLog.actions.push(_action);
             };
 
+            function _random() {
+                var max = 10;
+                var min = 0;
+                var r = Math.floor(Math.random() * (max - min)) + min;
+                console.log(r);
+                return r;
+            }
+
 
             var _this = this;
             _this.error = {
@@ -86,7 +88,7 @@
             //example
             function failOrSuccess() {
                 $window.setTimeout(function () {
-                    if (Math.random() % 2 === 0) {
+                    if (_random() % 2 === 0) {
                         $scope.changeProgressLog(100, 'success', {
                             msg: 'LOG.FINISH',
                             type: 'success'
@@ -101,6 +103,7 @@
                         });
                         $scope.disableWizard(false);
                     }
+                    $scope.$apply();
                 }, 3000);
             }
 
@@ -114,7 +117,7 @@
                 });
 
                 //example
-                if (Math.random() % 2 === 0) {
+                if (_random() % 2 === 0) {
                     $scope.changeProgressLog(50, 'info', {
                         msg: 'LOG.SENDING',
                         type: 'info'
@@ -138,7 +141,7 @@
                     type: 'info'
                 });
                 //example
-                if (Math.random() % 2 === 0) {
+                if (_random() % 2 === 0) {
                     $scope.changeProgressLog(50, 'info', {
                         msg: 'LOG.SENDING',
                         type: 'info'
@@ -151,6 +154,7 @@
             };
 
             //***Ohter logic of controller***
+            $scope.model = {};
             //**ohters (init services, events, load combos...**/
             $scope.$on('destroy', function () {
 

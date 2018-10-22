@@ -11,8 +11,7 @@
             $scope.show_next = $scope.getEnabledSteps().length > 1;
             $scope.show_previous = false;
 
-            //src/config/wizard.config.js
-            var updateData = $scope.config.updateData || {};
+            var updateData = $scope.$resolve.updateData || {};
             console.log('UPDATE_DATA: ' + updateData);
 
             if ($scope.isEditMode()) {
@@ -32,11 +31,6 @@
                     "key": "comment",
                     "type": "textarea",
                     "placeholder": "Make a comment"
-                },
-                {
-                    "type": "submit",
-                    "style": "btn-info",
-                    "title": "OK"
                 }
             ];
             //Configure schema
@@ -78,8 +72,7 @@
 
             //Logic of step
             function build() {
-                //src/config/wizard.config.js
-                $scope.config.updateData = updateData || {};
+                $scope.$resolve.updateData = updateData || {};
                 console.log('MODEL: ' + JSON.stringify($scope.model));
             }
 

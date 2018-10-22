@@ -28,41 +28,30 @@ __webpack_require__(2);
 
     angular
         .module('wiwi.wizard')
-        /*.config(function (dashboardProvider) {
-          dashboardProvider
-            .widget('exampleWizard', {
-              title: 'Example wizard',
-              description: 'This widget is an example of wiwi of type wizard',
-              template: require('{widgetsPath}/opengate-web/modules/wizard/client/views/entity/entitywizard.client.view.html'),
-              controller: 'wizardExampleController',
-              category: 'Wizards',
-              show_modal_footer: false,
-              show_reload_config: false
-            });
-        })*/
-
-        .run(function ($doActions) {
-            $doActions.listener('exampleWizard', function (updateData) {
-                return (new ParserConfig(updateData)).parse();
+        .run(function ($enabledWizards) {
+            //Configuración del wizard en servicio que provee y lanza los wizards
+            $enabledWizards.wizards.exampleWizard = $enabledWizards.getCommonConfig({
+                //Podmeos sobre-escribir el template (html base del wizard)
+                //Por defecto
+                //template: 'modules/wizard/client/views/wizard.client.view.html',
+                //controller: 'exampleWizardController',
+                //windowClass: 'exampleWizard-wizard',
+                //Podmeos sobre-escribir el tamaño del wizard, posibles valores:  el, sm, lg
+                //Por defecto
+                //size: 'el'
             });
 
-            function ParserConfig(_data) {
-                this.parse = function () {
-                    switch (_data._event) {
-                        case 'createExampleWizard':
-                            return {
-                                _event: 'create'
-                            };
-                        case 'editExampleWizard':
-                            return {
-                                updateData: _data,
-                                _event: 'edit'
-                            };
-                        default:
-                            break;
-                    }
-                };
-            }
+            //
+            /**
+             * Si esta configuración no existiera, el servicio lanzaría un wizard con la siguiente configuración
+             * {
+             *      template: 'modules/wizard/client/views/wizard.client.view.html',
+             *      controller:  name_of_wizard + 'Controller',
+             *      windowClass: name_of_wizard + '-wizard'
+             * }
+             * 
+             * Donde name_of_wizard es: meta-widget.json -> actions[nombre_de_acción][nombre_de_widget]
+             */
         });
 
 }());
@@ -79,7 +68,7 @@ __webpack_require__(3);
 
     var _wizard = angular.module('wiwi.wizard');
 
-    _wizard.controller('wizardExampleController', ['$scope', '$uibModalInstance', '$controller', 'toastr', 'stepsWizardService', 'datastreamServiceProvider', '$window',
+    _wizard.controller('exampleWizardController', ['$scope', '$uibModalInstance', '$controller', 'toastr', 'stepsWizardService', 'datastreamServiceProvider', '$window',
         function ($scope, $uibModalInstance, $controller, toastr, stepsWizardService, datastreamServiceProvider, $window) {
 
             //***Configuration of wizard***
@@ -106,18 +95,12 @@ __webpack_require__(3);
             };
             $scope.show_reset = false;
 
-            //src/config/wizard.config.js
-            var isEdit = $scope.config._event === 'edit';
-            var isCreate = $scope.config._event === 'create';
-
             $scope.isEditMode = function () {
-                //original: return Object.keys($scope.$resolve.updateData).length > 1;
-                return isEdit;
+                return Object.keys($scope.$resolve.updateData).length > 1;
             };
 
             if ($scope.isEditMode()) {
-                //src/config/wizard.config.js
-                var updateData = $scope.config.updateData;
+                var updateData = $scope.$resolve.updateData;
                 console.log('UPDATE_DATA: ' + JSON.stringify(updateData));
                 configWizard.disable = false;
                 configWizard.editMode = true;
@@ -153,6 +136,14 @@ __webpack_require__(3);
                 $scope.progressLog.actions.push(_action);
             };
 
+            function _random() {
+                var max = 10;
+                var min = 0;
+                var r = Math.floor(Math.random() * (max - min)) + min;
+                console.log(r);
+                return r;
+            }
+
 
             var _this = this;
             _this.error = {
@@ -162,7 +153,7 @@ __webpack_require__(3);
             //example
             function failOrSuccess() {
                 $window.setTimeout(function () {
-                    if (Math.random() % 2 === 0) {
+                    if (_random() % 2 === 0) {
                         $scope.changeProgressLog(100, 'success', {
                             msg: 'LOG.FINISH',
                             type: 'success'
@@ -177,6 +168,7 @@ __webpack_require__(3);
                         });
                         $scope.disableWizard(false);
                     }
+                    $scope.$apply();
                 }, 3000);
             }
 
@@ -190,7 +182,7 @@ __webpack_require__(3);
                 });
 
                 //example
-                if (Math.random() % 2 === 0) {
+                if (_random() % 2 === 0) {
                     $scope.changeProgressLog(50, 'info', {
                         msg: 'LOG.SENDING',
                         type: 'info'
@@ -214,7 +206,7 @@ __webpack_require__(3);
                     type: 'info'
                 });
                 //example
-                if (Math.random() % 2 === 0) {
+                if (_random() % 2 === 0) {
                     $scope.changeProgressLog(50, 'info', {
                         msg: 'LOG.SENDING',
                         type: 'info'
@@ -227,6 +219,7 @@ __webpack_require__(3);
             };
 
             //***Ohter logic of controller***
+            $scope.model = {};
             //**ohters (init services, events, load combos...**/
             $scope.$on('destroy', function () {
 
@@ -256,8 +249,7 @@ __webpack_require__(5);
             $scope.show_next = $scope.getEnabledSteps().length > 1;
             $scope.show_previous = false;
 
-            //src/config/wizard.config.js
-            var updateData = $scope.config.updateData || {};
+            var updateData = $scope.$resolve.updateData || {};
             console.log('UPDATE_DATA: ' + updateData);
 
             if ($scope.isEditMode()) {
@@ -277,11 +269,6 @@ __webpack_require__(5);
                     "key": "comment",
                     "type": "textarea",
                     "placeholder": "Make a comment"
-                },
-                {
-                    "type": "submit",
-                    "style": "btn-info",
-                    "title": "OK"
                 }
             ];
             //Configure schema
@@ -323,8 +310,7 @@ __webpack_require__(5);
 
             //Logic of step
             function build() {
-                //src/config/wizard.config.js
-                $scope.config.updateData = updateData || {};
+                $scope.$resolve.updateData = updateData || {};
                 console.log('MODEL: ' + JSON.stringify($scope.model));
             }
 
@@ -385,7 +371,7 @@ __webpack_require__(5);
 /* 5 */
 /***/ (function(module, exports) {
 
-var v1='<fieldset class=wiwi-step-admin><div class=col-xs-12><form sf-schema=schema sf-form=form sf-model=model sf-options=sfOptions></form></div><wizard-log class=col-xs-12 bar=progressLog></wizard-log></fieldset>';
+var v1='<fieldset class=wiwi-step-admin><div class=col-xs-12><div sf-schema=schema sf-form=form sf-model=model sf-options=sfOptions></div></div><wizard-log class=col-xs-12 bar=progressLog></wizard-log></fieldset>';
 angular.module('wiwi.wizard').run(['$templateCache', function ($templateCache) {$templateCache.put('src/views/step.admin.view.html', v1);}]);
 module.exports=v1
 

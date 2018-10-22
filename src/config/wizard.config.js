@@ -3,41 +3,29 @@
 
     angular
         .module('wiwi.wizard')
-        /*.config(function (dashboardProvider) {
-          dashboardProvider
-            .widget('exampleWizard', {
-              title: 'Example wizard',
-              description: 'This widget is an example of wiwi of type wizard',
-              template: require('{widgetsPath}/opengate-web/modules/wizard/client/views/entity/entitywizard.client.view.html'),
-              controller: 'wizardExampleController',
-              category: 'Wizards',
-              show_modal_footer: false,
-              show_reload_config: false
-            });
-        })*/
-
-        .run(function ($doActions) {
-            $doActions.listener('exampleWizard', function (updateData) {
-                return (new ParserConfig(updateData)).parse();
+        .run(function ($enabledWizards) {
+            //Configuración (opcional) del wizard en servicio que provee y lanza los wizards
+            $enabledWizards.wizards.exampleWizard = $enabledWizards.getCommonConfig({
+                //Podmeos sobre-escribir el template (html base del wizard)
+                //Por defecto
+                //template: 'modules/wizard/client/views/wizard.client.view.html',
+                controller: 'exampleWizardController',
+                windowClass: 'exampleWizard-wizard',
+                //Podmeos sobre-escribir el tamaño del wizard, posibles valores:  el, sm, lg
+                //Por defecto
+                //size: 'el'
             });
 
-            function ParserConfig(_data) {
-                this.parse = function () {
-                    switch (_data._event) {
-                        case 'createExampleWizard':
-                            return {
-                                _event: 'create'
-                            };
-                        case 'editExampleWizard':
-                            return {
-                                updateData: _data,
-                                _event: 'edit'
-                            };
-                        default:
-                            break;
-                    }
-                };
-            }
+            /**
+             * Si esta configuración no se definiera, el servicio lanzaría un wizard con la siguiente configuración
+             * {
+             *      template: 'modules/wizard/client/views/wizard.client.view.html',
+             *      controller:  name_of_wizard + 'Controller',
+             *      windowClass: name_of_wizard + '-wizard'
+             * }
+             * 
+             * Donde name_of_wizard es: meta-widget.json -> actions[nombre_de_acción][nombre_de_widget]
+             */
         });
 
 }());
