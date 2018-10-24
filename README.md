@@ -58,9 +58,17 @@ They will ask for the following information:
 3. user name: user that exists in the platform OpenGate
 4. password: password of user
 
+## Generate version
+
+This project offers the following script that version the project using [npm](https://docs.npmjs.com/cli/version)
+
+```
+npm version [ major | minor | patch ]
+```
+
 ## Notes of version
 
-**0.1.0**
+**0.1.0, 1.0.x**
 
 This version is compatible with opengate-web version >= 8.13.x
 
