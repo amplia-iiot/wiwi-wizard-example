@@ -29,21 +29,20 @@ __webpack_require__(2);
     angular
         .module('wiwi.wizard')
         .run(function ($enabledWizards) {
-            //Configuración del wizard en servicio que provee y lanza los wizards
+            //Configuración (opcional) del wizard en servicio que provee y lanza los wizards
             $enabledWizards.wizards.exampleWizard = $enabledWizards.getCommonConfig({
                 //Podmeos sobre-escribir el template (html base del wizard)
                 //Por defecto
                 //template: 'modules/wizard/client/views/wizard.client.view.html',
-                //controller: 'exampleWizardController',
-                //windowClass: 'exampleWizard-wizard',
+                controller: 'exampleWizardController',
+                windowClass: 'exampleWizard-wizard',
                 //Podmeos sobre-escribir el tamaño del wizard, posibles valores:  el, sm, lg
                 //Por defecto
                 //size: 'el'
             });
 
-            //
             /**
-             * Si esta configuración no existiera, el servicio lanzaría un wizard con la siguiente configuración
+             * Si esta configuración no se definiera, el servicio lanzaría un wizard con la siguiente configuración
              * {
              *      template: 'modules/wizard/client/views/wizard.client.view.html',
              *      controller:  name_of_wizard + 'Controller',
@@ -68,17 +67,21 @@ __webpack_require__(3);
 
     var _wizard = angular.module('wiwi.wizard');
 
-    _wizard.controller('exampleWizardController', ['$scope', '$uibModalInstance', '$controller', 'toastr', 'stepsWizardService', 'datastreamServiceProvider', '$window',
+    _wizard.controller('exampleWizardController', ['$scope', '$uibModalInstance', '$controller', 'toastr', 'wiwi.wizard.stepsWizardService', 'datastreamServiceProvider', '$window',
         function ($scope, $uibModalInstance, $controller, toastr, stepsWizardService, datastreamServiceProvider, $window) {
 
             //***Configuration of wizard***
             var wizard_type = $scope.wizard_type = 'example';
 
-            //**configuration of steps**
+            /**
+             * configuration of steps with step custom
+             */
             $scope.defaultWizardSteps = stepsWizardService.getStepsController();
 
-            //**configuration of step custom**
-            $scope._datastreamService = datastreamServiceProvider.getInstance();
+            /**
+             * Get step custom
+             * $scope._datastreamService = datastreamServiceProvider.getInstance();
+             */
 
             //**init the wizard and steps**
             $controller('WizardController', {
@@ -86,6 +89,10 @@ __webpack_require__(3);
                 $uibModalInstance: $uibModalInstance
             });
 
+            /**
+             * configuration of steps without step custom
+             * $scope.wizardSteps = stepsWizardService.getStepsController();
+             */
             //**configure wizard defaults with logic of wizard (for all steps)**
             var configWizard = {
                 title: 'HEADER.WIZARD.EXAMPLE.TITLE',
@@ -241,7 +248,7 @@ __webpack_require__(5);
 
     var _wizard = angular.module('wiwi.wizard');
 
-    _wizard.factory('stepsWizardService', [function () {
+    _wizard.factory('wiwi.wizard.stepsWizardService', [function () {
 
         var stepAdminController = function ($scope) {
 

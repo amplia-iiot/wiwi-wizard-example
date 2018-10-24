@@ -3,17 +3,21 @@
 
     var _wizard = angular.module('wiwi.wizard');
 
-    _wizard.controller('exampleWizardController', ['$scope', '$uibModalInstance', '$controller', 'toastr', 'stepsWizardService', 'datastreamServiceProvider', '$window',
+    _wizard.controller('exampleWizardController', ['$scope', '$uibModalInstance', '$controller', 'toastr', 'wiwi.wizard.stepsWizardService', 'datastreamServiceProvider', '$window',
         function ($scope, $uibModalInstance, $controller, toastr, stepsWizardService, datastreamServiceProvider, $window) {
 
             //***Configuration of wizard***
             var wizard_type = $scope.wizard_type = 'example';
 
-            //**configuration of steps**
+            /**
+             * configuration of steps with step custom
+             */
             $scope.defaultWizardSteps = stepsWizardService.getStepsController();
 
-            //**configuration of step custom**
-            $scope._datastreamService = datastreamServiceProvider.getInstance();
+            /**
+             * Get step custom
+             * $scope._datastreamService = datastreamServiceProvider.getInstance();
+             */
 
             //**init the wizard and steps**
             $controller('WizardController', {
@@ -21,6 +25,10 @@
                 $uibModalInstance: $uibModalInstance
             });
 
+            /**
+             * configuration of steps without step custom
+             * $scope.wizardSteps = stepsWizardService.getStepsController();
+             */
             //**configure wizard defaults with logic of wizard (for all steps)**
             var configWizard = {
                 title: 'HEADER.WIZARD.EXAMPLE.TITLE',

@@ -3,7 +3,7 @@
 
     var _wizard = angular.module('wiwi.wizard');
 
-    _wizard.factory('stepsWizardService', [function () {
+    _wizard.factory('wiwi.wizard.stepsWizardService', [function () {
 
         var stepAdminController = function ($scope) {
 
