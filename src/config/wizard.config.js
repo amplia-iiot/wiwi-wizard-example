@@ -1,9 +1,10 @@
-(function () {
+(function() {
     'use strict';
 
     angular
         .module('wiwi.wizard')
-        .run(function ($enabledWizards) {
+        .config(translateConfig)
+        .run(function($enabledWizards) {
             //Configuración (opcional) del wizard en servicio que provee y lanza los wizards
             $enabledWizards.wizards.exampleWizard = $enabledWizards.getCommonConfig({
                 //Podmeos sobre-escribir el template (html base del wizard)
@@ -27,6 +28,14 @@
              * Donde name_of_wizard es: meta-widget.json -> actions[nombre_de_acción][nombre_de_widget]
              */
         });
+    translateConfig.$inject = ['$translateProvider'];
+
+    function translateConfig($translateProvider) {
+
+        $translateProvider.translations('en', {
+            'WIWI': 'WIWI'
+        });
+    };
 
 }());
 
