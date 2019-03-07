@@ -1,4 +1,5 @@
-webpackJsonp([0],[
+// [AIV_SHORT]  Build version: 1.0.1 - Thursday, March 7th, 2019, 10:03:45 AM  
+ webpackJsonp([0],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -391,4 +392,4 @@ angular.module('wiwi.wizard').run(['$templateCache', function ($templateCache) {
 module.exports=v1
 
 /***/ })
-],[0]);
+],[0]); 

@@ -1,4 +1,5 @@
-/******/ (function(modules) { // webpackBootstrap
+// [AIV_SHORT]  Build version: 1.0.1 - Thursday, March 7th, 2019, 10:03:45 AM  
+ /******/ (function(modules) { // webpackBootstrap
 /******/ 	// install a JSONP callback for chunk loading
 /******/ 	var parentJsonpFunction = window["webpackJsonp"];
 /******/ 	window["webpackJsonp"] = function webpackJsonpCallback(chunkIds, moreModules, executeModules) {
@@ -98,4 +99,4 @@
 /******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
 /******/ })
 /************************************************************************/
-/******/ ([]);
+/******/ ([]); 
