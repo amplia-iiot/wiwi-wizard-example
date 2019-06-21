@@ -51,6 +51,12 @@ npm run update
 npm run delete
 ```
 
+**Publish**
+
+```
+npm run publish [register|update|delete] [url of api-web] [domain] [user name] [password]
+```
+
 They will ask for the following information:
 
 1. Type url of api-web (http://localhost:3977): default http://localhost:3977
