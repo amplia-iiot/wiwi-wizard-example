@@ -29,7 +29,7 @@ function createRequest(type, token, config, nameWidget) {
   var requestConfig = {
     url: config.apiWebUrl + '/api/wiwi/' + config.domain + '/bundles',
     headers: {
-      'authorization': token
+      'Authorization': `Bearer ${token}`
     }
   };
   return {
