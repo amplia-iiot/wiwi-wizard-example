@@ -24,7 +24,7 @@
         "postversion": "git checkout master && git pull && git merge develop && git push && git checkout develop && git push && git push --tags"
     },
     "devDependencies": {
-        "angular": "^1.7.9",
+        "angular": "^1.8.3",
         "angular-templatecache-loader": "^0.2.0",
         "babel-loader": "^8.0.4",
         "html-loader": "^0.4.5",
